@@ -30,4 +30,24 @@ class UserController extends Controller
 
         return response()->json($users, 200);
     }
+
+    public function edit(User $user)
+    {
+        return response()->json($user);
+    }
+
+    public function update(UserRequest $request, User $user)
+    {
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return response()->json($user, 200);
+    }
+
+    public function destroy(User $user)
+    {
+        return response()->json($user->delete(), 200);
+    }
 }

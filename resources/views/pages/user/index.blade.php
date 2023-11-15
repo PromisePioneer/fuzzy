@@ -10,6 +10,7 @@
                 Tambah
             </button>
             @include('pages.user.components.modal.create')
+            @include('pages.user.components.modal.edit')
         </div>
         <table class="table table-row-dashed table-row-gray-300 gy-7">
             <thead>
@@ -41,14 +42,14 @@
             </template>
                 <template x-for="(row,index) in users?.data" :key="row.id">
             <tr>
-                <td x-text="startIndex++"></td>
+                <td x-text="startIndex + index++"></td>
                 <td x-text="row.name"></td>
                 <td x-text="row.email"></td>
                 <td>
-                    <button type="button"  class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                    <button type="button" @click="edit(row.id)"  class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm">
+                    <button type="button" class="btn btn-danger btn-sm" @click="destroy(row.id)">
                         <i class="bi bi-trash"></i>
                     </button>
                 </td>
@@ -69,49 +70,5 @@
     </div>
 @endsection
 @push('js')
-    <script>
-        const formCreate = document.getElementById('form-create');
-        const modalCreate = new bootstrap.Modal(document.getElementById('modal-create'));
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('userData', () => ({
-                users:null,
-                isLoading:true,
-                async init(){
-                    const users = await axios.get('user/data');
-                    this.users = users.data;
-                    this.startIndex = this.users.from;
-                    this.isLoading = false;
-                },
-                async nextPage(){
-                    if(this.users.next_page_url){
-                    const users = await axios.get(`${this.users.next_page_url}`)
-                    this.users = await users.data
-                    console.log(this.users);
-                    }
-                },
-                async PrevPage(){
-                    if(this.users.prev_page_url){
-                        const users = await axios.get(`${this.users.prev_page_url}`)
-                        this.users = await users.data
-                        console.log(this.users);
-                    }
-                },
-                async save(){
-                    await axios.post('user', new FormData(formCreate))
-                        .then(() => {
-                            Swal.fire({
-                                title: "Good job!",
-                                text: "Success!",
-                                icon: "success"
-                            });
-                            this.init();
-                            formCreate.reset();
-                            modalCreate.hide();
-                        })
-                        .catch((error) => {
-                        })
-                }
-            }))
-        })
-    </script>
+    @include('pages.user.script')
 @endpush

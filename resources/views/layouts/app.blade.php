@@ -290,6 +290,22 @@
                                 <span class="menu-title">User</span>
                             </a>
                         </div>
+                        <div class="menu-item">
+                            <a  class="menu-link {{ Request::segment(1) === 'variable' ? 'active' : '' }}" href="{{ url('/variable') }}">
+										<span class="menu-icon">
+											<i class="bi bi-people-fill"></i>
+										</span>
+                                <span class="menu-title">Variable</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a  class="menu-link {{ Request::segment(1) === 'dataset' ? 'active' : '' }}" href="{{ url('/dataset') }}">
+										<span class="menu-icon">
+											<i class="bi bi-people-fill"></i>
+										</span>
+                                <span class="menu-title">Dataset</span>
+                            </a>
+                        </div>
                     </div>
                     <!--end::Menu-->
                 </div>
